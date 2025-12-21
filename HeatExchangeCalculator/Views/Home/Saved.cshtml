@@ -64,7 +64,12 @@ else
                                         </td>
                                         <td>
                                             <a href="@Url.Action("LoadCalculation", new { id = calc.Id })" 
-                                               class="btn btn-sm btn-primary">📖 Открыть</a>
+                                            class="btn btn-sm btn-primary">📖 Открыть</a>
+                                            
+                                            <!-- Добавляем эту строку -->
+                                            <a href="@Url.Action("ExportToExcel", new { id = calc.Id })" 
+                                            class="btn btn-sm btn-success">📊 Excel (CSV)</a>
+                                            
                                             <a href="@Url.Action("Result", new { 
                                                 layerHeight = calc.Parameters.LayerHeight,
                                                 volumetricHeatTransferCoefficient = calc.Parameters.VolumetricHeatTransferCoefficient,
@@ -75,10 +80,11 @@ else
                                                 initialMaterialTemperature = calc.Parameters.InitialMaterialTemperature,
                                                 initialGasTemperature = calc.Parameters.InitialGasTemperature,
                                                 apparatusDiameter = calc.Parameters.ApparatusDiameter
-                                            })" class="btn btn-sm btn-success">🔄 Повторить</a>
+                                            })" class="btn btn-sm btn-info">🔄 Повторить</a>
+                                            
                                             <form method="post" asp-action="DeleteCalculation" 
-                                                  style="display:inline" 
-                                                  onsubmit="return confirm('Удалить этот расчет?');">
+                                                style="display:inline" 
+                                                onsubmit="return confirm('Удалить этот расчет?');">
                                                 <input type="hidden" name="id" value="@calc.Id" />
                                                 <button type="submit" class="btn btn-sm btn-danger">🗑️ Удалить</button>
                                             </form>

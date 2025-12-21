@@ -1,8 +1,30 @@
 {
   "version": 2,
-  "dgSpecHash": "UXuwfkIwNsQ=",
+  "dgSpecHash": "JgxhLu+CQrA=",
   "success": true,
   "projectFilePath": "C:\\Users\\SV\\Desktop\\model-v-metall\\HeatExchangeCalculator\\HeatExchangeCalculator.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\SV\\.nuget\\packages\\closedxml\\0.105.0\\closedxml.0.105.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\closedxml.parser\\2.0.0\\closedxml.parser.2.0.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\documentformat.openxml\\3.1.1\\documentformat.openxml.3.1.1.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\documentformat.openxml.framework\\3.1.1\\documentformat.openxml.framework.3.1.1.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\epplus\\8.4.0\\epplus.8.4.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\epplus.interfaces\\8.4.0\\epplus.interfaces.8.4.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\excelnumberformat\\1.1.0\\excelnumberformat.1.1.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.3\\microsoft.extensions.configuration.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.3\\microsoft.extensions.configuration.abstractions.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.configuration.fileextensions\\9.0.3\\microsoft.extensions.configuration.fileextensions.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.configuration.json\\9.0.3\\microsoft.extensions.configuration.json.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\9.0.3\\microsoft.extensions.fileproviders.abstractions.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\9.0.3\\microsoft.extensions.fileproviders.physical.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\9.0.3\\microsoft.extensions.filesystemglobbing.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.3\\microsoft.extensions.primitives.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\microsoft.io.recyclablememorystream\\3.0.1\\microsoft.io.recyclablememorystream.3.0.1.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\rbush.signed\\4.0.0\\rbush.signed.4.0.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\sixlabors.fonts\\1.0.0\\sixlabors.fonts.1.0.0.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\system.io.packaging\\8.0.1\\system.io.packaging.8.0.1.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\system.security.cryptography.pkcs\\9.0.3\\system.security.cryptography.pkcs.9.0.3.nupkg.sha512",
+    "C:\\Users\\SV\\.nuget\\packages\\system.security.cryptography.xml\\9.0.3\\system.security.cryptography.xml.9.0.3.nupkg.sha512"
+  ],
   "logs": []
 }

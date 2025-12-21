@@ -101,7 +101,7 @@
         </div>
     </div>
 </div>
-<!-- Форма для сохранения и кнопки -->
+<!-- Форма для сохранения -->
 <div class="row mt-4">
     <div class="col-md-8 offset-md-2">
         <div class="card">
@@ -110,10 +110,22 @@
             </div>
             <div class="card-body">
                 <form method="post" asp-action="SaveCalculation">
-                    @{
-                        var jsonResult = System.Text.Json.JsonSerializer.Serialize(Model);
-                    }
-                    <input type="hidden" name="resultJson" value="@jsonResult" />
+                    <!-- Передаем всю модель как параметры -->
+                    <input type="hidden" name="CrossSectionalArea" value="@Model.CrossSectionalArea" />
+                    <input type="hidden" name="HeatCapacityRatio" value="@Model.HeatCapacityRatio" />
+                    <input type="hidden" name="TotalRelativeHeight" value="@Model.TotalRelativeHeight" />
+                    <input type="hidden" name="FullRelativeHeight" value="@Model.FullRelativeHeight" />
+                    
+                    <!-- Параметры расчета -->
+                    <input type="hidden" name="Parameters.LayerHeight" value="@Model.Parameters.LayerHeight" />
+                    <input type="hidden" name="Parameters.VolumetricHeatTransferCoefficient" value="@Model.Parameters.VolumetricHeatTransferCoefficient" />
+                    <input type="hidden" name="Parameters.GasVelocity" value="@Model.Parameters.GasVelocity" />
+                    <input type="hidden" name="Parameters.GasHeatCapacity" value="@Model.Parameters.GasHeatCapacity" />
+                    <input type="hidden" name="Parameters.MaterialFlowRate" value="@Model.Parameters.MaterialFlowRate" />
+                    <input type="hidden" name="Parameters.MaterialHeatCapacity" value="@Model.Parameters.MaterialHeatCapacity" />
+                    <input type="hidden" name="Parameters.InitialMaterialTemperature" value="@Model.Parameters.InitialMaterialTemperature" />
+                    <input type="hidden" name="Parameters.InitialGasTemperature" value="@Model.Parameters.InitialGasTemperature" />
+                    <input type="hidden" name="Parameters.ApparatusDiameter" value="@Model.Parameters.ApparatusDiameter" />
                     
                     <div class="mb-3">
                         <label for="calculationName" class="form-label">Название расчета:</label>
@@ -137,6 +149,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Блок с параметрами -->
