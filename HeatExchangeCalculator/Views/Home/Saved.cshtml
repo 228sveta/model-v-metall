@@ -1,0 +1,95 @@
+@model List<HeatExchangeCalculator.Services.SavedCalculation>
+@{
+    ViewData["Title"] = "Сохраненные расчеты";
+}
+
+<div class="text-center">
+    <h1 class="display-4 mb-4">💾 Сохраненные расчеты</h1>
+    <a href="/" class="btn btn-outline-primary mb-4">← Вернуться к расчету</a>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">
+        <h5>📭 Нет сохраненных расчетов</h5>
+        <p>Выполните расчет и сохраните его, чтобы он появился здесь.</p>
+    </div>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>📚 Список сохраненных расчетов (@Model.Count)</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Дата сохранения</th>
+                                    <th>Параметры</th>
+                                    <th>Действия</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var calc in Model.OrderByDescending(c => c.SaveDate))
+                                {
+                                    <tr>
+                                        <td>@calc.Id</td>
+                                        <td>
+                                            <strong>@calc.Name</strong>
+                                            @if (!string.IsNullOrEmpty(calc.Name) && calc.Name.StartsWith("Расчет от"))
+                                            {
+                                                <br><small class="text-muted">Автоматическое название</small>
+                                            }
+                                        </td>
+                                        <td>@calc.SaveDate.ToString("dd.MM.yyyy HH:mm")</td>
+                                        <td>
+                                            <small>
+                                                H=@calc.Parameters.LayerHeight м, 
+                                                w=@calc.Parameters.GasVelocity м/с,
+                                                G=@calc.Parameters.MaterialFlowRate кг/с
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("LoadCalculation", new { id = calc.Id })" 
+                                               class="btn btn-sm btn-primary">📖 Открыть</a>
+                                            <a href="@Url.Action("Result", new { 
+                                                layerHeight = calc.Parameters.LayerHeight,
+                                                volumetricHeatTransferCoefficient = calc.Parameters.VolumetricHeatTransferCoefficient,
+                                                gasVelocity = calc.Parameters.GasVelocity,
+                                                gasHeatCapacity = calc.Parameters.GasHeatCapacity,
+                                                materialFlowRate = calc.Parameters.MaterialFlowRate,
+                                                materialHeatCapacity = calc.Parameters.MaterialHeatCapacity,
+                                                initialMaterialTemperature = calc.Parameters.InitialMaterialTemperature,
+                                                initialGasTemperature = calc.Parameters.InitialGasTemperature,
+                                                apparatusDiameter = calc.Parameters.ApparatusDiameter
+                                            })" class="btn btn-sm btn-success">🔄 Повторить</a>
+                                            <form method="post" asp-action="DeleteCalculation" 
+                                                  style="display:inline" 
+                                                  onsubmit="return confirm('Удалить этот расчет?');">
+                                                <input type="hidden" name="id" value="@calc.Id" />
+                                                <button type="submit" class="btn btn-sm btn-danger">🗑️ Удалить</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

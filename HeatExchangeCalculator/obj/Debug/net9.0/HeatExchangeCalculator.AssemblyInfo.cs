@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HeatExchangeCalculator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+99f5b19463b518808829bd915e2322f7d509b41d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1ed01dd92c2cf57683dd7b57ddda091274c38c34")]
 [assembly: System.Reflection.AssemblyProductAttribute("HeatExchangeCalculator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HeatExchangeCalculator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

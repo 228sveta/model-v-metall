@@ -18,15 +18,17 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Высота слоя, м</label>
+                        <label asp-for="LayerHeight" class="form-label"></label>
                         <input type="number" step="0.1" class="form-control" 
-                               asp-for="LayerHeight" value="3.0">
+                               asp-for="LayerHeight">
+                        <span asp-validation-for="LayerHeight" class="text-danger"></span>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Диаметр аппарата, м</label>
+                        <label asp-for="ApparatusDiameter" class="form-label"></label>
                         <input type="number" step="0.1" class="form-control" 
-                               asp-for="ApparatusDiameter" value="2.2">
+                               asp-for="ApparatusDiameter">
+                        <span asp-validation-for="ApparatusDiameter" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -38,21 +40,24 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Расход материалов, кг/с</label>
+                        <label asp-for="MaterialFlowRate" class="form-label"></label>
                         <input type="number" step="0.01" class="form-control" 
-                               asp-for="MaterialFlowRate" value="1.68">
+                               asp-for="MaterialFlowRate">
+                        <span asp-validation-for="MaterialFlowRate" class="text-danger"></span>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Теплоемкость материалов, кДж/(кг·К)</label>
+                        <label asp-for="MaterialHeatCapacity" class="form-label"></label>
                         <input type="number" step="0.01" class="form-control" 
-                               asp-for="MaterialHeatCapacity" value="1.49">
+                               asp-for="MaterialHeatCapacity">
+                        <span asp-validation-for="MaterialHeatCapacity" class="text-danger"></span>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Начальная температура материала, °C</label>
+                        <label asp-for="InitialMaterialTemperature" class="form-label"></label>
                         <input type="number" class="form-control" 
-                               asp-for="InitialMaterialTemperature" value="0">
+                               asp-for="InitialMaterialTemperature">
+                        <span asp-validation-for="InitialMaterialTemperature" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -66,21 +71,24 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Скорость газа, м/с</label>
+                        <label asp-for="GasVelocity" class="form-label"></label>
                         <input type="number" step="0.01" class="form-control" 
-                               asp-for="GasVelocity" value="0.74">
+                               asp-for="GasVelocity">
+                        <span asp-validation-for="GasVelocity" class="text-danger"></span>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Теплоемкость газа, кДж/(м³·К)</label>
+                        <label asp-for="GasHeatCapacity" class="form-label"></label>
                         <input type="number" step="0.01" class="form-control" 
-                               asp-for="GasHeatCapacity" value="1.35">
+                               asp-for="GasHeatCapacity">
+                        <span asp-validation-for="GasHeatCapacity" class="text-danger"></span>
                     </div>
                     
                     <div class="mb-3">
-                        <label class="form-label">Начальная температура газа, °C</label>
+                        <label asp-for="InitialGasTemperature" class="form-label"></label>
                         <input type="number" class="form-control" 
-                               asp-for="InitialGasTemperature" value="750">
+                               asp-for="InitialGasTemperature">
+                        <span asp-validation-for="InitialGasTemperature" class="text-danger"></span>
                     </div>
                 </div>
             </div>
@@ -92,14 +100,24 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <label class="form-label">Объемный коэффициент теплоотдачи, Вт/(м³·К)</label>
+                        <label asp-for="VolumetricHeatTransferCoefficient" class="form-label"></label>
                         <input type="number" step="1" class="form-control" 
-                               asp-for="VolumetricHeatTransferCoefficient" value="2440">
+                               asp-for="VolumetricHeatTransferCoefficient">
+                        <span asp-validation-for="VolumetricHeatTransferCoefficient" class="text-danger"></span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <!-- Сообщения об ошибках валидации -->
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <h5>❌ Исправьте ошибки в форме:</h5>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </div>
+    }
     
     <!-- Кнопки -->
     <div class="row mt-4">
@@ -112,5 +130,7 @@
             </button>
         </div>
     </div>
+    @section Scripts {
+    <script src="~/js/validation.js"></script>
+}
 </form>
-

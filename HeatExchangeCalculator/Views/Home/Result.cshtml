@@ -1,0 +1,209 @@
+@model HeatExchangeCalculator.Models.CalculationResult
+@{
+    ViewData["Title"] = "Результаты расчета";
+}
+
+<!-- Основные результаты -->
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5>📈 Основные расчетные величины</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <p><strong>Площадь сечения:</strong><br>
+                        <span class="h5">@Model.CrossSectionalArea.ToString("F3") м²</span></p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><strong>Отношение теплоемкостей (m):</strong><br>
+                        <span class="h5">@Model.HeatCapacityRatio.ToString("F3")</span></p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><strong>Полная отн. высота (Y₀):</strong><br>
+                        <span class="h5">@Model.TotalRelativeHeight.ToString("F3")</span></p>
+                    </div>
+                    <div class="col-md-3">
+                        <p><strong>Знаменатель:</strong><br>
+                        <span class="h5">@Model.FullRelativeHeight.ToString("F4")</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Таблица результатов -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>📋 Распределение температур по высоте слоя</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Высота y, м</th>
+                                <th>Y</th>
+                                <th>θ1</th>
+                                <th>θ2</th>
+                                <th>ϑ</th>
+                                <th>θ</th>
+                                <th>t, °C</th>
+                                <th>T, °C</th>
+                                <th>Δt, °C</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var point in Model.Points)
+                            {
+                                <tr>
+                                    <td><strong>@point.Height.ToString("F1")</strong></td>
+                                    <td>@point.Y.ToString("F2")</td>
+                                    <td>@point.Theta1.ToString("F2")</td>
+                                    <td>@point.Theta2.ToString("F2")</td>
+                                    <td>@point.DimensionlessMaterialTemp.ToString("F2")</td>
+                                    <td>@point.DimensionlessGasTemp.ToString("F2")</td>
+                                    <td>@point.MaterialTemperature.ToString("F1")</td>
+                                    <td>@point.GasTemperature.ToString("F1")</td>
+                                    <td class="@(point.TemperatureDifference < 0 ? "text-danger" : "text-success")">
+                                        @point.TemperatureDifference.ToString("F1")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Графики -->
+<div class="row mt-5">
+    <div class="col-md-12">
+        <h3>📈 Графики распределения температур</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="chart-container">
+            <canvas id="temperatureChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="chart-container">
+            <canvas id="differenceChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+</div>
+<!-- Форма для сохранения и кнопки -->
+<div class="row mt-4">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5>💾 Сохранить расчет</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-action="SaveCalculation">
+                    @{
+                        var jsonResult = System.Text.Json.JsonSerializer.Serialize(Model);
+                    }
+                    <input type="hidden" name="resultJson" value="@jsonResult" />
+                    
+                    <div class="mb-3">
+                        <label for="calculationName" class="form-label">Название расчета:</label>
+                        <input type="text" class="form-control" id="calculationName" 
+                               name="name" placeholder="Например: 'Исходные параметры'">
+                        <div class="form-text">Оставьте пустым для автоматического названия</div>
+                    </div>
+                    
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            💾 Сохранить расчет
+                        </button>
+                        <a href="/" class="btn btn-primary btn-lg">
+                            🔄 Новый расчет
+                        </a>
+                        <button type="button" class="btn btn-info btn-lg" onclick="window.print()">
+                            🖨️ Распечатать
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Блок с параметрами -->
+<div class="row mt-5">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>⚙️ Использованные параметры</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6>Слой и аппарат</h6>
+                        <ul class="small">
+                            <li>Высота слоя: @Model.Parameters.LayerHeight м</li>
+                            <li>Диаметр аппарата: @Model.Parameters.ApparatusDiameter м</li>
+                            <li>αV: @Model.Parameters.VolumetricHeatTransferCoefficient Вт/(м³·К)</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Материал</h6>
+                        <ul class="small">
+                            <li>Расход: @Model.Parameters.MaterialFlowRate кг/с</li>
+                            <li>Теплоемкость: @Model.Parameters.MaterialHeatCapacity кДж/(кг·К)</li>
+                            <li>Нач. темп.: @Model.Parameters.InitialMaterialTemperature °C</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Газ</h6>
+                        <ul class="small">
+                            <li>Скорость: @Model.Parameters.GasVelocity м/с</li>
+                            <li>Теплоемкость: @Model.Parameters.GasHeatCapacity кДж/(м³·К)</li>
+                            <li>Нач. темп.: @Model.Parameters.InitialGasTemperature °C</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Форма для сохранения -->
+    <div class="row mt-4">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5>💾 Сохранить расчет</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="SaveCalculation">
+                        <input type="hidden" name="result" value='@Json.Serialize(Model)' />
+                        
+                        <div class="mb-3">
+                            <label for="calculationName" class="form-label">Название расчета:</label>
+                            <input type="text" class="form-control" id="calculationName" 
+                                name="name" placeholder="Например: 'Исходные параметры'">
+                            <div class="form-text">Оставьте пустым для автоматического названия</div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-success">
+                            💾 Сохранить расчет
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Подключаем Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/charts.js"></script>
