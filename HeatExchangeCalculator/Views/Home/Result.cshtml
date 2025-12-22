@@ -1,216 +1,250 @@
 @model HeatExchangeCalculator.Models.CalculationResult
+@using System.Text.Json
 @{
     ViewData["Title"] = "Результаты расчета";
 }
 
-<!-- Основные результаты -->
-<div class="row mb-4">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <h5>📈 Основные расчетные величины</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p><strong>Площадь сечения:</strong><br>
-                        <span class="h5">@Model.CrossSectionalArea.ToString("F3") м²</span></p>
-                    </div>
-                    <div class="col-md-3">
-                        <p><strong>Отношение теплоемкостей (m):</strong><br>
-                        <span class="h5">@Model.HeatCapacityRatio.ToString("F3")</span></p>
-                    </div>
-                    <div class="col-md-3">
-                        <p><strong>Полная отн. высота (Y₀):</strong><br>
-                        <span class="h5">@Model.TotalRelativeHeight.ToString("F3")</span></p>
-                    </div>
-                    <div class="col-md-3">
-                        <p><strong>Знаменатель:</strong><br>
-                        <span class="h5">@Model.FullRelativeHeight.ToString("F4")</span></p>
-                    </div>
-                </div>
+<div class="container mt-4">
+    <!-- Заголовок -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-success">
+                <h2><i class="bi bi-graph-up"></i> Результаты расчета теплообмена</h2>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Таблица результатов -->
-<div class="row">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header bg-primary text-white">
-                <h5>📋 Распределение температур по высоте слоя</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Высота y, м</th>
-                                <th>Y</th>
-                                <th>θ1</th>
-                                <th>θ2</th>
-                                <th>ϑ</th>
-                                <th>θ</th>
-                                <th>t, °C</th>
-                                <th>T, °C</th>
-                                <th>Δt, °C</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var point in Model.Points)
-                            {
-                                <tr>
-                                    <td><strong>@point.Height.ToString("F1")</strong></td>
-                                    <td>@point.Y.ToString("F2")</td>
-                                    <td>@point.Theta1.ToString("F2")</td>
-                                    <td>@point.Theta2.ToString("F2")</td>
-                                    <td>@point.DimensionlessMaterialTemp.ToString("F2")</td>
-                                    <td>@point.DimensionlessGasTemp.ToString("F2")</td>
-                                    <td>@point.MaterialTemperature.ToString("F1")</td>
-                                    <td>@point.GasTemperature.ToString("F1")</td>
-                                    <td class="@(point.TemperatureDifference < 0 ? "text-danger" : "text-success")">
-                                        @point.TemperatureDifference.ToString("F1")
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Графики -->
-<div class="row mt-5">
-    <div class="col-md-12">
-        <h3>📈 Графики распределения температур</h3>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6">
-        <div class="chart-container">
-            <canvas id="temperatureChart" width="400" height="300"></canvas>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="chart-container">
-            <canvas id="differenceChart" width="400" height="300"></canvas>
-        </div>
-    </div>
-</div>
-<!-- Форма для сохранения -->
-<div class="row mt-4">
-    <div class="col-md-8 offset-md-2">
-        <div class="card">
-            <div class="card-header bg-success text-white">
-                <h5>💾 Сохранить расчет</h5>
-            </div>
-            <div class="card-body">
-                <form method="post" asp-action="SaveCalculation">
-                    <!-- Передаем всю модель как параметры -->
-                    <input type="hidden" name="CrossSectionalArea" value="@Model.CrossSectionalArea" />
-                    <input type="hidden" name="HeatCapacityRatio" value="@Model.HeatCapacityRatio" />
-                    <input type="hidden" name="TotalRelativeHeight" value="@Model.TotalRelativeHeight" />
-                    <input type="hidden" name="FullRelativeHeight" value="@Model.FullRelativeHeight" />
-                    
-                    <!-- Параметры расчета -->
-                    <input type="hidden" name="Parameters.LayerHeight" value="@Model.Parameters.LayerHeight" />
-                    <input type="hidden" name="Parameters.VolumetricHeatTransferCoefficient" value="@Model.Parameters.VolumetricHeatTransferCoefficient" />
-                    <input type="hidden" name="Parameters.GasVelocity" value="@Model.Parameters.GasVelocity" />
-                    <input type="hidden" name="Parameters.GasHeatCapacity" value="@Model.Parameters.GasHeatCapacity" />
-                    <input type="hidden" name="Parameters.MaterialFlowRate" value="@Model.Parameters.MaterialFlowRate" />
-                    <input type="hidden" name="Parameters.MaterialHeatCapacity" value="@Model.Parameters.MaterialHeatCapacity" />
-                    <input type="hidden" name="Parameters.InitialMaterialTemperature" value="@Model.Parameters.InitialMaterialTemperature" />
-                    <input type="hidden" name="Parameters.InitialGasTemperature" value="@Model.Parameters.InitialGasTemperature" />
-                    <input type="hidden" name="Parameters.ApparatusDiameter" value="@Model.Parameters.ApparatusDiameter" />
-                    
-                    <div class="mb-3">
-                        <label for="calculationName" class="form-label">Название расчета:</label>
-                        <input type="text" class="form-control" id="calculationName" 
-                               name="name" placeholder="Например: 'Исходные параметры'">
-                        <div class="form-text">Оставьте пустым для автоматического названия</div>
-                    </div>
-                    
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button type="submit" class="btn btn-success btn-lg">
-                            💾 Сохранить расчет
-                        </button>
-                        <a href="/" class="btn btn-primary btn-lg">
-                            🔄 Новый расчет
-                        </a>
-                        <button type="button" class="btn btn-info btn-lg" onclick="window.print()">
-                            🖨️ Распечатать
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-
-<!-- Блок с параметрами -->
-<div class="row mt-5">
-    <div class="col-md-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>⚙️ Использованные параметры</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-4">
-                        <h6>Слой и аппарат</h6>
-                        <ul class="small">
-                            <li>Высота слоя: @Model.Parameters.LayerHeight м</li>
-                            <li>Диаметр аппарата: @Model.Parameters.ApparatusDiameter м</li>
-                            <li>αV: @Model.Parameters.VolumetricHeatTransferCoefficient Вт/(м³·К)</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Материал</h6>
-                        <ul class="small">
-                            <li>Расход: @Model.Parameters.MaterialFlowRate кг/с</li>
-                            <li>Теплоемкость: @Model.Parameters.MaterialHeatCapacity кДж/(кг·К)</li>
-                            <li>Нач. темп.: @Model.Parameters.InitialMaterialTemperature °C</li>
-                        </ul>
-                    </div>
-                    <div class="col-md-4">
-                        <h6>Газ</h6>
-                        <ul class="small">
-                            <li>Скорость: @Model.Parameters.GasVelocity м/с</li>
-                            <li>Теплоемкость: @Model.Parameters.GasHeatCapacity кДж/(м³·К)</li>
-                            <li>Нач. темп.: @Model.Parameters.InitialGasTemperature °C</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Форма для сохранения -->
-    <div class="row mt-4">
-        <div class="col-md-8 offset-md-2">
+    <!-- Основные результаты -->
+    <div class="row mb-4">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h5>💾 Сохранить расчет</h5>
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="bi bi-calculator"></i> Основные расчетные величины</h5>
                 </div>
                 <div class="card-body">
-                    <form method="post" asp-action="SaveCalculation">
-                        <input type="hidden" name="result" value='@Json.Serialize(Model)' />
-                        
-                        <div class="mb-3">
-                            <label for="calculationName" class="form-label">Название расчета:</label>
-                            <input type="text" class="form-control" id="calculationName" 
-                                name="name" placeholder="Например: 'Исходные параметры'">
-                            <div class="form-text">Оставьте пустым для автоматического названия</div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <p><strong>Площадь сечения:</strong><br>
+                            <span class="h5 text-primary">@Model.CrossSectionalArea.ToString("F3") м²</span></p>
                         </div>
-                        
-                        <button type="submit" class="btn btn-success">
-                            💾 Сохранить расчет
-                        </button>
-                    </form>
+                        <div class="col-md-3">
+                            <p><strong>Отношение теплоемкостей (m):</strong><br>
+                            <span class="h5 text-primary">@Model.HeatCapacityRatio.ToString("F3")</span></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p><strong>Полная отн. высота (Y₀):</strong><br>
+                            <span class="h5 text-primary">@Model.TotalRelativeHeight.ToString("F3")</span></p>
+                        </div>
+                        <div class="col-md-3">
+                            <p><strong>Знаменатель:</strong><br>
+                            <span class="h5 text-primary">@Model.FullRelativeHeight.ToString("F4")</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Таблица результатов -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5><i class="bi bi-table"></i> Распределение температур по высоте слоя</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Высота y, м</th>
+                                    <th>Y</th>
+                                    <th>θ1</th>
+                                    <th>θ2</th>
+                                    <th>ϑ</th>
+                                    <th>θ</th>
+                                    <th>t, °C</th>
+                                    <th>T, °C</th>
+                                    <th>Δt, °C</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var point in Model.Points)
+                                {
+                                    <tr>
+                                        <td><strong>@point.Height.ToString("F1")</strong></td>
+                                        <td>@point.Y.ToString("F2")</td>
+                                        <td>@point.Theta1.ToString("F2")</td>
+                                        <td>@point.Theta2.ToString("F2")</td>
+                                        <td>@point.DimensionlessMaterialTemp.ToString("F2")</td>
+                                        <td>@point.DimensionlessGasTemp.ToString("F2")</td>
+                                        <td class="text-primary fw-bold">@point.MaterialTemperature.ToString("F1")</td>
+                                        <td class="text-danger fw-bold">@point.GasTemperature.ToString("F1")</td>
+                                        <td class="@(point.TemperatureDifference < 0 ? "text-danger fw-bold" : "text-success fw-bold")">
+                                            @point.TemperatureDifference.ToString("F1")
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Графики -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h3><i class="bi bi-bar-chart-line"></i> Графики распределения температур</h3>
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Графики строятся автоматически при загрузке страницы
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>Температуры материала и газа</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="temperatureChart" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h5>Разность температур Δt = t - T</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="differenceChart" width="400" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Формы управления -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5><i class="bi bi-gear"></i> Управление результатами</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <!-- Сохранение расчета -->
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header bg-success text-white">
+                                    <h6><i class="bi bi-save"></i> Сохранить расчет</h6>
+                                </div>
+                                <div class="card-body">
+                                    <form method="post" asp-action="SaveCalculation">
+                                        <input type="hidden" name="result" value='@JsonSerializer.Serialize(Model)' />
+                                        
+                                        <div class="mb-3">
+                                            <label for="calculationName" class="form-label">Название расчета:</label>
+                                            <input type="text" class="form-control" id="calculationName" 
+                                                   name="name" placeholder="Например: 'Основной расчет'" 
+                                                   value="Расчет от @DateTime.Now.ToString("dd.MM.yyyy HH:mm")">
+                                            <div class="form-text">Оставьте для автоматического названия</div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-success w-100">
+                                            <i class="bi bi-save"></i> Сохранить в базу данных
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+    <!-- Блок с параметрами -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5><i class="bi bi-sliders"></i> Использованные параметры</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6><i class="bi bi-rulers"></i> Слой и аппарат</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Высота слоя:</span>
+                                    <strong>@Model.Parameters.LayerHeight м</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Диаметр аппарата:</span>
+                                    <strong>@Model.Parameters.ApparatusDiameter м</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>αV:</span>
+                                    <strong>@Model.Parameters.VolumetricHeatTransferCoefficient Вт/(м³·К)</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="bi bi-box"></i> Материал</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Расход:</span>
+                                    <strong>@Model.Parameters.MaterialFlowRate кг/с</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Теплоемкость:</span>
+                                    <strong>@Model.Parameters.MaterialHeatCapacity кДж/(кг·К)</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Нач. темп.:</span>
+                                    <strong>@Model.Parameters.InitialMaterialTemperature °C</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="bi bi-wind"></i> Газ</h6>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Скорость:</span>
+                                    <strong>@Model.Parameters.GasVelocity м/с</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Теплоемкость:</span>
+                                    <strong>@Model.Parameters.GasHeatCapacity кДж/(м³·К)</strong>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>Нач. темп.:</span>
+                                    <strong>@Model.Parameters.InitialGasTemperature °C</strong>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Навигация -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="d-flex justify-content-between">
+                <a href="/" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Новый расчет
+                </a>
+                <div>
+                    <a href="/Home/Saved" class="btn btn-outline-info">
+                        <i class="bi bi-archive"></i> Все сохраненные расчеты
+                    </a>
+                    <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
+                        <i class="bi bi-printer"></i> Печать
+                    </button>
                 </div>
             </div>
         </div>
@@ -219,4 +253,113 @@
 
 <!-- Подключаем Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="~/js/charts.js"></script>
+<script>
+    // Данные для графиков
+    var heights = [@string.Join(", ", Model.Points.Select(p => p.Height.ToString("F1").Replace(",", ".")))];
+    var materialTemps = [@string.Join(", ", Model.Points.Select(p => p.MaterialTemperature.ToString("F1").Replace(",", ".")))];
+    var gasTemps = [@string.Join(", ", Model.Points.Select(p => p.GasTemperature.ToString("F1").Replace(",", ".")))];
+    var diffs = [@string.Join(", ", Model.Points.Select(p => p.TemperatureDifference.ToString("F1").Replace(",", ".")))];
+
+    // График температур
+    var tempCtx = document.getElementById('temperatureChart').getContext('2d');
+    var tempChart = new Chart(tempCtx, {
+        type: 'line',
+        data: {
+            labels: heights,
+            datasets: [
+                {
+                    label: 'Температура материала, °C',
+                    data: materialTemps,
+                    borderColor: 'rgb(54, 162, 235)',
+                    backgroundColor: 'rgba(54, 162, 235, 0.1)',
+                    borderWidth: 2,
+                    fill: true
+                },
+                {
+                    label: 'Температура газа, °C',
+                    data: gasTemps,
+                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: 'rgba(255, 99, 132, 0.1)',
+                    borderWidth: 2,
+                    fill: true
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Распределение температур по высоте слоя'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Высота слоя, м'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Температура, °C'
+                    }
+                }
+            }
+        }
+    });
+
+    // График разницы температур
+    var diffCtx = document.getElementById('differenceChart').getContext('2d');
+    var diffChart = new Chart(diffCtx, {
+        type: 'line',
+        data: {
+            labels: heights,
+            datasets: [{
+                label: 'Разность температур Δt = t - T, °C',
+                data: diffs,
+                borderColor: 'rgb(255, 159, 64)',
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Разность температур материала и газа'
+                }
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Высота слоя, м'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Δt, °C'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+<style>
+    .chart-container {
+        position: relative;
+        height: 250px;
+        width: 100%;
+    }
+    .list-group-item {
+        border: none;
+        padding: 0.5rem 0;
+    }
+</style>

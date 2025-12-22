@@ -1,4 +1,4 @@
-@model List<HeatExchangeCalculator.Services.SavedCalculation>
+@model List<HeatExchangeCalculator.Models.SavedCalculation>
 @{
     ViewData["Title"] = "Сохраненные расчеты";
 }
@@ -65,11 +65,7 @@ else
                                         <td>
                                             <a href="@Url.Action("LoadCalculation", new { id = calc.Id })" 
                                             class="btn btn-sm btn-primary">📖 Открыть</a>
-                                            
-                                            <!-- Добавляем эту строку -->
-                                            <a href="@Url.Action("ExportToExcel", new { id = calc.Id })" 
-                                            class="btn btn-sm btn-success">📊 Excel (CSV)</a>
-                                            
+
                                             <a href="@Url.Action("Result", new { 
                                                 layerHeight = calc.Parameters.LayerHeight,
                                                 volumetricHeatTransferCoefficient = calc.Parameters.VolumetricHeatTransferCoefficient,

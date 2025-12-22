@@ -134,5 +134,107 @@
         "ApparatusDiameter": 2.2
       }
     }
+  },
+  {
+    "Id": 7,
+    "Name": "\u0420\u0430\u0441\u0447\u0435\u0442 \u043E\u0442 22.12.2025 01:28",
+    "SaveDate": "2025-12-22T01:28:42.8658524+05:00",
+    "Parameters": {
+      "LayerHeight": 3,
+      "VolumetricHeatTransferCoefficient": 2440,
+      "GasVelocity": 0.74,
+      "GasHeatCapacity": 1.35,
+      "MaterialFlowRate": 1.68,
+      "MaterialHeatCapacity": 1.49,
+      "InitialMaterialTemperature": 0,
+      "InitialGasTemperature": 750,
+      "ApparatusDiameter": 2.2
+    },
+    "Result": {
+      "CrossSectionalArea": 0,
+      "HeatCapacityRatio": 0,
+      "TotalRelativeHeight": 0,
+      "FullRelativeHeight": 0,
+      "Points": [],
+      "Parameters": {
+        "LayerHeight": 3,
+        "VolumetricHeatTransferCoefficient": 2440,
+        "GasVelocity": 0.74,
+        "GasHeatCapacity": 1.35,
+        "MaterialFlowRate": 1.68,
+        "MaterialHeatCapacity": 1.49,
+        "InitialMaterialTemperature": 0,
+        "InitialGasTemperature": 750,
+        "ApparatusDiameter": 2.2
+      }
+    }
+  },
+  {
+    "Id": 8,
+    "Name": "\u0420\u0430\u0441\u0447\u0435\u0442 \u043E\u0442 22.12.2025 16:33",
+    "SaveDate": "2025-12-22T16:33:53.2625389+05:00",
+    "Parameters": {
+      "LayerHeight": 3,
+      "VolumetricHeatTransferCoefficient": 2440,
+      "GasVelocity": 0.74,
+      "GasHeatCapacity": 1.35,
+      "MaterialFlowRate": 1.68,
+      "MaterialHeatCapacity": 1.49,
+      "InitialMaterialTemperature": 0,
+      "InitialGasTemperature": 750,
+      "ApparatusDiameter": 2.2
+    },
+    "Result": {
+      "CrossSectionalArea": 0,
+      "HeatCapacityRatio": 0,
+      "TotalRelativeHeight": 0,
+      "FullRelativeHeight": 0,
+      "Points": [],
+      "Parameters": {
+        "LayerHeight": 3,
+        "VolumetricHeatTransferCoefficient": 2440,
+        "GasVelocity": 0.74,
+        "GasHeatCapacity": 1.35,
+        "MaterialFlowRate": 1.68,
+        "MaterialHeatCapacity": 1.49,
+        "InitialMaterialTemperature": 0,
+        "InitialGasTemperature": 750,
+        "ApparatusDiameter": 2.2
+      }
+    }
+  },
+  {
+    "Id": 9,
+    "Name": "\u0420\u0430\u0441\u0447\u0435\u0442 \u043E\u0442 22.12.2025 16:43",
+    "SaveDate": "2025-12-22T16:43:21.1497713+05:00",
+    "Parameters": {
+      "LayerHeight": 3,
+      "VolumetricHeatTransferCoefficient": 2440,
+      "GasVelocity": 0.74,
+      "GasHeatCapacity": 1.35,
+      "MaterialFlowRate": 1.68,
+      "MaterialHeatCapacity": 1.49,
+      "InitialMaterialTemperature": 0,
+      "InitialGasTemperature": 750,
+      "ApparatusDiameter": 2.2
+    },
+    "Result": {
+      "CrossSectionalArea": 0,
+      "HeatCapacityRatio": 0,
+      "TotalRelativeHeight": 0,
+      "FullRelativeHeight": 0,
+      "Points": [],
+      "Parameters": {
+        "LayerHeight": 3,
+        "VolumetricHeatTransferCoefficient": 2440,
+        "GasVelocity": 0.74,
+        "GasHeatCapacity": 1.35,
+        "MaterialFlowRate": 1.68,
+        "MaterialHeatCapacity": 1.49,
+        "InitialMaterialTemperature": 0,
+        "InitialGasTemperature": 750,
+        "ApparatusDiameter": 2.2
+      }
+    }
   }
 ]
